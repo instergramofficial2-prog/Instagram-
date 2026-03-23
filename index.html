@@ -1,12 +1,13 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <title>Insta X</title>
+  <!-- Instagram-like slanted font -->
   <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
 
   <style>
     body { margin:0; font-family:Arial; background:#fafafa; }
-    .logo { font-family:'Grand Hotel',cursive; font-size:45px; text-align:center; padding:20px; }
+    .logo { font-family:'Grand Hotel', cursive; font-size:45px; text-align:center; padding:20px; }
     .container { max-width:400px; margin:auto; margin-top:50px; }
     .box { background:white; padding:20px; border:1px solid #ddd; border-radius:10px; text-align:center; }
     input { width:90%; padding:10px; margin:5px; border:1px solid #ccc; border-radius:5px; }
@@ -20,6 +21,7 @@
 
 <body>
 
+<!-- HOME PAGE -->
 <div id="home" class="container">
   <div class="logo">Insta X</div>
   <div class="box">
@@ -28,6 +30,7 @@
   </div>
 </div>
 
+<!-- LOGIN / SIGN UP PAGE -->
 <div id="login" class="container">
   <div class="logo">Insta X</div>
   <div class="box">
@@ -38,8 +41,10 @@
   </div>
 </div>
 
+<!-- LOADING SCREEN -->
 <div id="loading" class="logo">Loading...</div>
 
+<!-- FEED PAGE -->
 <div id="feed" class="container">
   <div class="logo">Insta X</div>
 
@@ -48,25 +53,25 @@
     <div class="like" onclick="like(this)">❤️ Like</div>
   </div>
 
+  <div class="post">
+    <img src="https://picsum.photos/400/301">
+    <div class="like" onclick="like(this)">❤️ Like</div>
+  </div>
+
 </div>
 
-    </div> <div id="home"
-        <h1>Welcome to My Website!</h1>
-        <p>You have successfully logged in.</p>
-        <button onclick="logout()">Logout</button>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- 
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<!-- SUPABASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.6.0/dist/supabase.min.js"></script>
 
 <script>
-  // 🔥 REPLACE THESE AFTER YOU CREATE SUPABASE PROJECT
+  // 🔥 FILL IN YOUR SUPABASE DETAILS BELOW
   const SUPABASE_URL = https://tlsnrusxzgheshxklzee.supabase.co
   const SUPABASE_KEY = sb_publishable_cCZgn9IUA4qHFHECRXZrcw_rvZEHLRs
 
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // Initialize Supabase client
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  // Show home page initially
   document.getElementById("home").style.display = "block";
 
   function showLogin() {
@@ -74,35 +79,48 @@
     document.getElementById("login").style.display = "block";
   }
 
+  // SIGN UP FUNCTION
   async function signup() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    if(!email || !password) {
+      alert("Please fill in all fields!");
+      return;
+    }
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Account created ✅");
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if(error) throw error;
+      alert("Account created successfully ✅");
+    } catch(err) {
+      alert(err.message);
     }
   }
 
+  // LOGIN FUNCTION
   async function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
+    if(!email || !password) {
+      alert("Please fill in all fields!");
+      return;
+    }
+
     document.getElementById("login").style.display = "none";
     document.getElementById("loading").style.display = "block";
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if(error) throw error;
 
-    if (error) {
-      alert(error.message);
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("login").style.display = "block";
-    } else {
       document.getElementById("loading").style.display = "none";
       document.getElementById("feed").style.display = "block";
+    } catch(err) {
+      alert(err.message);
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("login").style.display = "block";
     }
   }
 
