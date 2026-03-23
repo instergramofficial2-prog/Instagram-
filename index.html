@@ -1,133 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Insta X</title>
-  <!-- Instagram-like slanted font -->
+  <title>Insta X Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
 
   <style>
-    body { margin:0; font-family:Arial; background:#fafafa; }
-    .logo { font-family:'Grand Hotel', cursive; font-size:45px; text-align:center; padding:20px; }
-    .container { max-width:400px; margin:auto; margin-top:50px; }
-    .box { background:white; padding:20px; border:1px solid #ddd; border-radius:10px; text-align:center; }
-    input { width:90%; padding:10px; margin:5px; border:1px solid #ccc; border-radius:5px; }
-    button { width:95%; padding:10px; background:#0095f6; color:white; border:none; margin-top:10px; cursor:pointer; border-radius:5px; }
-    .post { background:white; border:1px solid #ddd; margin-top:20px; }
-    .post img { width:100%; }
-    .like { padding:10px; cursor:pointer; }
-    #home,#login,#feed,#loading { display:none; }
+    body {
+      margin:0;
+      font-family:Arial;
+      background:#fafafa;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+
+    .login-container {
+      background:white;
+      border:1px solid #ddd;
+      border-radius:8px;
+      padding:40px 30px;
+      width:350px;
+      text-align:center;
+    }
+
+    .logo {
+      font-family:'Grand Hotel', cursive;
+      font-size:50px;
+      margin-bottom:20px;
+    }
+
+    input {
+      width:90%;
+      padding:10px;
+      margin:5px 0;
+      border:1px solid #ddd;
+      border-radius:5px;
+      font-size:14px;
+    }
+
+    button {
+      width:95%;
+      padding:10px;
+      margin-top:10px;
+      background:#0095f6;
+      color:white;
+      border:none;
+      border-radius:5px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .forgot, .signup {
+      font-size:12px;
+      color:#00376b;
+      margin-top:10px;
+      display:block;
+      cursor:pointer;
+      text-decoration:none;
+    }
+
+    .separator {
+      display:flex;
+      align-items:center;
+      text-align:center;
+      margin:15px 0;
+    }
+
+    .separator::before, .separator::after {
+      content:"";
+      flex:1;
+      border-bottom:1px solid #ddd;
+    }
+
+    .separator:not(:empty)::before {
+      margin-right:.75em;
+    }
+
+    .separator:not(:empty)::after {
+      margin-left:.75em;
+    }
+
   </style>
 </head>
 
 <body>
-
-<!-- HOME PAGE -->
-<div id="home" class="container">
-  <div class="logo">Insta X</div>
-  <div class="box">
-    <button onclick="showLogin()">Log In</button>
-    <button onclick="showLogin()">Sign Up</button>
-  </div>
-</div>
-
-<!-- LOGIN / SIGN UP PAGE -->
-<div id="login" class="container">
-  <div class="logo">Insta X</div>
-  <div class="box">
-    <input id="email" placeholder="Email"><br>
-    <input id="password" type="password" placeholder="Password"><br>
-    <button onclick="signup()">Sign Up</button>
+  <div class="login-container">
+    <div class="logo">Insta X</div>
+    <input type="text" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
     <button onclick="login()">Log In</button>
-  </div>
-</div>
 
-<!-- LOADING SCREEN -->
-<div id="loading" class="logo">Loading...</div>
+    <a class="forgot">Forgot password?</a>
 
-<!-- FEED PAGE -->
-<div id="feed" class="container">
-  <div class="logo">Insta X</div>
+    <div class="separator">OR</div>
 
-  <div class="post">
-    <img src="https://picsum.photos/400/300">
-    <div class="like" onclick="like(this)">❤️ Like</div>
+    <button style="background:#385185;">Log in with Facebook</button>
+
+    <a class="signup">Don't have an account? Sign Up</a>
   </div>
 
-  <div class="post">
-    <img src="https://picsum.photos/400/301">
-    <div class="like" onclick="like(this)">❤️ Like</div>
-  </div>
-
-</div>
-
-<!-- SUPABASE SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.6.0/dist/supabase.min.js"></script>
-
-<script>
-  // 🔥 FILL IN YOUR SUPABASE DETAILS BELOW
-  const SUPABASE_URL = https://tlsnrusxzgheshxklzee.supabase.co
-  const SUPABASE_KEY = sb_publishable_cCZgn9IUA4qHFHECRXZrcw_rvZEHLRs
-
-  // Initialize Supabase client
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // Show home page initially
-  document.getElementById("home").style.display = "block";
-
-  function showLogin() {
-    document.getElementById("home").style.display = "none";
-    document.getElementById("login").style.display = "block";
-  }
-
-  // SIGN UP FUNCTION
-  async function signup() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    if(!email || !password) {
-      alert("Please fill in all fields!");
-      return;
+  <script>
+    function login(){
+      // placeholder login function
+      alert("Login clicked! Connect this to Supabase or backend.");
     }
-
-    try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if(error) throw error;
-      alert("Account created successfully ✅");
-    } catch(err) {
-      alert(err.message);
-    }
-  }
-
-  // LOGIN FUNCTION
-  async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    if(!email || !password) {
-      alert("Please fill in all fields!");
-      return;
-    }
-
-    document.getElementById("login").style.display = "none";
-    document.getElementById("loading").style.display = "block";
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if(error) throw error;
-
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("feed").style.display = "block";
-    } catch(err) {
-      alert(err.message);
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("login").style.display = "block";
-    }
-  }
-
-  function like(btn) {
-    btn.innerHTML = "❤️ Liked";
-  }
-</script>
-
+  </script>
 </body>
 </html>
